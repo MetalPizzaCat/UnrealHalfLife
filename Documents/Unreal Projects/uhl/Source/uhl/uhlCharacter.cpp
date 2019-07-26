@@ -178,6 +178,10 @@ void AuhlCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
+	// Bind sprintp events
+	PlayerInputComponent->BindAction("Spint", IE_Pressed, this, &AuhlCharacter::StartSprinting);
+	PlayerInputComponent->BindAction("Spint", IE_Released, this, &AuhlCharacter::StopSprinting);
+
 	// Bind fire event
 	PlayerInputComponent->BindAction("PrimaryFire", IE_Pressed, this, &AuhlCharacter::OnPrimaryFire);
 	PlayerInputComponent->BindAction("SecondaryFire", IE_Pressed, this, &AuhlCharacter::OnSecondaryFire);
@@ -216,6 +220,8 @@ void AuhlCharacter::OnCrouch()
 	{
 		if (this->CanCrouch())
 		{
+			if (this->bSprinting) { this->StopSprinting(); }
+			this->TimePerLastStep *= 2;
 			this->Crouch();
 		}
 	}
@@ -224,6 +230,7 @@ void AuhlCharacter::OnCrouch()
 void AuhlCharacter::OnUnCrouch()
 {
 	this->UnCrouch();
+	this->TimePerLastStep = this->GetDefaultTimePerLastStep();
 }
 
 void AuhlCharacter::OnUse()
@@ -502,6 +509,36 @@ void AuhlCharacter::StopUsingLadder()
 	this->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 }
 
+void AuhlCharacter::StartSprinting()
+{
+	/*Can not sprint while crouching*/
+	if (!this->GetMovementComponent()->IsCrouching() && this->bCanSprint)
+	{
+		this->bSprinting = true;
+
+		Cast<UCharacterMovementComponent>(this->GetMovementComponent())->MaxWalkSpeed = this->GetMaxSpeedSprinting();
+
+		if (GetWorld() != nullptr && this->SprintingSound != nullptr)
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), this->SprintingSound, this->GetActorLocation());
+		}
+
+		this->TimePerLastStep /= 2;
+	}
+}
+
+void AuhlCharacter::StopSprinting()
+{
+	if (this->bSprinting)
+	{
+		this->bSprinting = false;
+
+		Cast<UCharacterMovementComponent>(this->GetMovementComponent())->MaxWalkSpeed = 600;/*This value is default for every character and as not changed for this project*/
+
+		this->TimePerLastStep = this->GetDefaultTimePerLastStep();
+	}
+}
+
 void AuhlCharacter::MoveForward(float Value)
 {
 	if (!this->Dead)
@@ -720,6 +757,24 @@ void AuhlCharacter::Tick(float DeltaTime)
 					}
 				}
 			}
+		}
+	}
+
+	if (this->bSprinting)
+	{
+		this->SprintedTime += DeltaTime;
+		if (this->SprintedTime >= this->GetMaxSprintTime())
+		{
+			this->bCanSprint = false;
+			this->StopSprinting();
+		}
+	}
+	else
+	{
+		if (this->SprintedTime > 0)
+		{
+			this->SprintedTime -= DeltaTime;
+			if (this->SprintedTime < 0) { this->SprintedTime = 0; this->bCanSprint = true; }
 		}
 	}
 }

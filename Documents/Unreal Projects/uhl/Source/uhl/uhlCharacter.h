@@ -84,6 +84,31 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, SaveGame, Category = Suit)
 		float MaxSuitEnergy = 100;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, SaveGame, Category = Movement)
+		float MaxSpeedSprinting = 900;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, SaveGame, Category = Movement)
+		float MaxSprintTime = 3.f;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, SaveGame, Category = Movement)
+		float SprintedTime = 0.f;
+
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, SaveGame, Category = Movement)
+		bool bSprinting = false;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, SaveGame, Category = Movement)
+		bool bCanSprint = true;
+
+	UFUNCTION(BlueprintPure)
+		bool GetIsSprinting()const { return bSprinting; }
+
+	UFUNCTION(BlueprintPure)
+		float GetMaxSprintTime()const { return MaxSprintTime; }
+
+	UFUNCTION(BlueprintPure)
+		float GetMaxSpeedSprinting()const { return MaxSpeedSprinting; }
+
 	UFUNCTION(BlueprintPure)
 		float GetMaxSuitEnergy()const;
 
@@ -98,6 +123,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void StopUsingLadder();
+
+	UFUNCTION(BlueprintCallable)
+		void StartSprinting();
+
+	UFUNCTION(BlueprintCallable)
+		void StopSprinting();
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void WeaponChageAnimNote(int prev, int next);
@@ -199,6 +230,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, SaveGame, Category = Sound)
 		USoundBase* GeigerSound;
 
+
+	/** Sound to play each time we start sprinting */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, SaveGame, Category = Sound)
+		class USoundBase* SprintingSound;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, SaveGame)
 		bool bHoldingItem = false;
 
@@ -216,6 +252,12 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, SaveGame, Category = Sound)
 		float TimePerLastStep = 0.5;
+
+	float DefaultTimePerLastStep = 0.5;
+
+	UFUNCTION(BlueprintPure)
+		float GetDefaultTimePerLastStep()const { return DefaultTimePerLastStep; }
+
 
 protected:
 	virtual void Tick(float DeltaTime) override;
