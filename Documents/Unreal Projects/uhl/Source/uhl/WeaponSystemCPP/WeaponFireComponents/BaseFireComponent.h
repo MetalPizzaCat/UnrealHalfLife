@@ -4,10 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+//#include "WeaponSystemCPP/WeaponBase.h"
 #include "BaseFireComponent.generated.h"
 
+class AWeaponBase;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UENUM(BlueprintType)
+enum class EFireType :uint8
+{
+	FTE_Primary UMETA(DisplayName="Primary"),
+	FTE_Secondary UMETA(DisplayName = "Secondary")
+};
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable)
 class UHL_API UBaseFireComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -24,5 +33,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	UFUNCTION(/*BlueprintNativeEvent, */BlueprintCallable, Category = "Fire")
+		virtual void Fire(EFireType type, FVector location, FRotator rotation, AWeaponBase* weapon);
 };

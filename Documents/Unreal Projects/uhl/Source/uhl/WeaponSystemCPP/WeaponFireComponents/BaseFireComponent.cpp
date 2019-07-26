@@ -2,6 +2,7 @@
 
 
 #include "BaseFireComponent.h"
+//#include "WeaponSystemCPP/WeaponBase.h"
 
 // Sets default values for this component's properties
 UBaseFireComponent::UBaseFireComponent()
@@ -30,5 +31,10 @@ void UBaseFireComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UBaseFireComponent::Fire(EFireType type, FVector location, FRotator rotation, AWeaponBase* weapon)
+{
+
 }
 
