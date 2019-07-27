@@ -67,6 +67,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, SaveGame)
 		int  CurrentWeaponId;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, SaveGame)
+		int  CurrentWeaponCategoryId;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, SaveGame)
 		TMap<FString, int>Ammo;
 

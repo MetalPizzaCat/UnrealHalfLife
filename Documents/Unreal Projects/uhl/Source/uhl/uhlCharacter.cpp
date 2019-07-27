@@ -101,32 +101,56 @@ AuhlCharacter::AuhlCharacter()
 
 bool AuhlCharacter::PickUpWeapon_Implementation(UDataTable* WeaponDataTable, UDataTable* AnimationDataTable, FName weaponName, int primaryAmountOfAmmo, int primaryAmmoInTheClip, int secondaryAmountOfAmmo, int secondaryAmmoInTheClip)
 {
-	
+
 	for (int i = 0; i < this->Weapons.Num(); i++)
 	{
-		if (this->Weapons[i]->Name == weaponName) { return false ; }
+		if (this->Weapons[i]->Name == weaponName) { return false; }
 	}
 	if (this->GetWorld() != NULL)
 	{
 		FActorSpawnParameters ActorSpawnParams;
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		
-		this->Weapons.Add(this->GetWorld()->SpawnActor<AWeaponBase>(this->GetActorLocation(), this->GetActorRotation(), ActorSpawnParams));
-		this->Weapons[this->Weapons.Num() - 1]->Name = weaponName;
-		if (this->Weapons[this->Weapons.Num() - 1]->LoadData(WeaponDataTable, AnimationDataTable))
+
+		//this->Weapons.Insert replaces add here
+
+		AWeaponBase* weaponTemp = this->GetWorld()->SpawnActor<AWeaponBase>(this->GetActorLocation(), this->GetActorRotation(), ActorSpawnParams);
+		weaponTemp->Name = weaponName;
+		if (weaponTemp->LoadData(WeaponDataTable, AnimationDataTable))
 		{
-			this->Weapons[this->Weapons.Num() - 1]->PrimaryAmmoInTheClip = primaryAmmoInTheClip;
-			this->Weapons[this->Weapons.Num() - 1]->PrimaryAmountOfAmmo = primaryAmountOfAmmo;
-			this->Weapons[this->Weapons.Num() - 1]->SecondaryAmmoInTheClip = secondaryAmmoInTheClip;
-			this->Weapons[this->Weapons.Num() - 1]->SecondaryAmountOfAmmo = secondaryAmountOfAmmo;
-			this->Weapons[this->Weapons.Num() - 1]->WeaponOwner = this;
-			return true;
+			weaponTemp->PrimaryAmmoInTheClip = primaryAmmoInTheClip;
+			weaponTemp->PrimaryAmountOfAmmo = primaryAmountOfAmmo;
+			weaponTemp->SecondaryAmmoInTheClip = secondaryAmmoInTheClip;
+			weaponTemp->SecondaryAmountOfAmmo = secondaryAmountOfAmmo;
+			weaponTemp->WeaponOwner = this;
 		}
 		else
 		{
-			this->Weapons.RemoveAt<int>(this->Weapons.Num() - 1, 1, true);
 			return false;
 		}
+
+
+		bool bSuccess = false;
+
+		if (this->Weapons.Num() == 0) { this->Weapons.Add(weaponTemp); return true; }
+		else
+		{
+			for (int i = 0; i < this->Weapons.Num(); i++)
+			{
+				if (this->Weapons[i]->Data.CategoryId > weaponTemp->Data.CategoryId)
+				{
+					this->Weapons.Insert(weaponTemp, i);
+
+					return true;
+					break;
+				}
+			}
+
+			this->Weapons.Add(weaponTemp);
+			return true;
+
+		}
+		return bSuccess;
 	}
 
 	return false;
