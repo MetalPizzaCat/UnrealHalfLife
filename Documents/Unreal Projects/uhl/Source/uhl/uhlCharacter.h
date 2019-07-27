@@ -136,6 +136,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void WeaponEndPrimaryReloadAnimNote();
 
+	/*Due to bug in the UE4 you unable to override Tick event*/
+	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent)
+		void AnimUpdateTick(float DeltaTime);
+
 public:
 	AuhlCharacter();
 

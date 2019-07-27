@@ -23,6 +23,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 //////////////////////////////////////////////////////////////////////////
 // AuhlCharacter
 
+
 AuhlCharacter::AuhlCharacter()
 {
 	// Set size for collision capsule
@@ -647,7 +648,7 @@ AWeaponBase* AuhlCharacter::GetCurrentWeapon()
 	}
 	else
 	{
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -760,6 +761,8 @@ void AuhlCharacter::Tick(float DeltaTime)
 		}
 	}
 
+	AnimUpdateTick(DeltaTime);
+	
 	if (this->bSprinting)
 	{
 		this->SprintedTime += DeltaTime;

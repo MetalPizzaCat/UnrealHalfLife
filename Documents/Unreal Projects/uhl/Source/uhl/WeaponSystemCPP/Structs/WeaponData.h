@@ -48,6 +48,9 @@ public:
 		bool OnlyWorldModel = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UAnimBlueprint* AnimBlueprint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool SecondaryFireUsesPrimaryClip = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PrimaryFire)

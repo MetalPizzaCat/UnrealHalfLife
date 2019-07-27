@@ -480,9 +480,4 @@ void AWeaponBase::Tick(float DeltaTime)
 	}
 }
 
-void AWeaponBase::OnMeshHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Weapon is touched"));
-	IWeaponInterface::Execute_PickUpWeapon(OtherActor, this->WeaponDataTable,this->AnimationDataTable,this->Name, this->PrimaryAmountOfAmmo, this->PrimaryAmmoInTheClip, this->SecondaryAmountOfAmmo, this->SecondaryAmmoInTheClip);
-}
 
