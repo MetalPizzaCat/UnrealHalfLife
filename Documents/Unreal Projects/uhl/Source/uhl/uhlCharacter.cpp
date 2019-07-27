@@ -676,6 +676,18 @@ AWeaponBase* AuhlCharacter::GetCurrentWeapon()
 	}
 }
 
+int AuhlCharacter::GetCategoriesCount() const
+{
+	int count = 0;
+	int lastCategory = -1;
+	if (this->Weapons.Num() == 0) { return 0; }
+	for (int i = 0; i < this->Weapons.Num(); i++)
+	{
+		if (this->Weapons[i]->Data.CategoryId > lastCategory) { count++; lastCategory = this->Weapons[i]->Data.CategoryId; }
+	}
+	return count;
+}
+
 bool  AuhlCharacter::PickUpAmmo_Implementation(FString AmmoName, int Amount)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, AmmoName);

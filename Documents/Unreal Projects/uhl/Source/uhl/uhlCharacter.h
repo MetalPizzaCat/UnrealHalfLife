@@ -121,6 +121,9 @@ public:
 	UFUNCTION(BlueprintPure)
 		AWeaponBase* GetCurrentWeapon();
 
+	UFUNCTION(BlueprintPure)
+		int GetCategoriesCount()const;
+
 	UFUNCTION(BlueprintCallable)
 		void StartUsingLadder();
 
