@@ -124,6 +124,9 @@ public:
 	UFUNCTION(BlueprintPure)
 		int GetCategoriesCount()const;
 
+	UFUNCTION(BlueprintPure)
+		TArray<AWeaponBase*> GetAllWeaponOfCategory(int CategoryId);
+
 	UFUNCTION(BlueprintCallable)
 		void StartUsingLadder();
 

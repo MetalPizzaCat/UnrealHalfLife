@@ -688,6 +688,23 @@ int AuhlCharacter::GetCategoriesCount() const
 	return count;
 }
 
+TArray<AWeaponBase*> AuhlCharacter::GetAllWeaponOfCategory(int CategoryId)
+{
+	TArray<AWeaponBase*> Result;
+	if (this->Weapons.Num() == 0) { return TArray<AWeaponBase*>(); }
+	else
+	{
+		for (int i = 0; i < this->Weapons.Num(); i++)
+		{
+			if (this->Weapons[i]->Data.CategoryId == CategoryId)
+			{
+				Result.Add(this->Weapons[i]);
+			}
+		}
+		return Result;
+	}
+}
+
 bool  AuhlCharacter::PickUpAmmo_Implementation(FString AmmoName, int Amount)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, AmmoName);
