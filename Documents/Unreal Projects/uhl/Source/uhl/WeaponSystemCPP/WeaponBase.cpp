@@ -114,7 +114,7 @@ bool AWeaponBase::PrimaryFire(FVector location, FRotator rotation)
 bool AWeaponBase::SecondaryFire(FVector location, FRotator rotation)
 {
 	
-	if (this->Data.SecondaryFireComponent != NULL)
+	if (this->Data.SecondaryFireComponent != nullptr)
 	{
 		if (this->Data.Melee)
 		{
@@ -123,7 +123,9 @@ bool AWeaponBase::SecondaryFire(FVector location, FRotator rotation)
 				this->Data.SecondaryFireComponent->GetDefaultObject<UBaseFireComponent>()->Fire(EFireType::FTE_Secondary, location, rotation, this);
 				this->SecondaryIsShooting = true;
 				return true;
+
 			}
+			else { return false; }
 		}
 		else
 		{
@@ -170,16 +172,32 @@ bool AWeaponBase::SecondaryFire(FVector location, FRotator rotation)
 					}
 					else
 					{
+
+						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Reloading Sec2"));
+						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::FromInt(this->SecondaryAmountOfAmmo));
 						return false;
 
 					}
 				}
 			}
+			else if (this->SecondaryAmountOfAmmo > 0)
+			{
+				this->SecondaryReload();
+				return false;
+			}
+			else
+			{
+				return false;
+
+			}
 		}
 	}
+	else
+	{
 		return false;
-	
-	return false;
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("loophole found contact my table about that"));
+	//return false;
 }
 
 void AWeaponBase::EndPrimaryReload()
