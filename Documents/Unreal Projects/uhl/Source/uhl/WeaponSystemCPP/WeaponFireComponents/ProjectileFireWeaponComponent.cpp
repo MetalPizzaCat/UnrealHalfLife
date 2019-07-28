@@ -10,7 +10,7 @@
 void UProjectileFireWeaponComponent::Fire(EFireType type, FVector location, FRotator rotation, AWeaponBase* weapon)
 {
 
-	if (weapon->GetWorld() != NULL)
+	if (weapon->GetWorld() != NULL && weapon->WeaponOwner != nullptr)
 	{
 		float CurrentFiringSpread = ((type == EFireType::FTE_Primary) ? weapon->Data.PrimarySpread : weapon->Data.SecondarySpread);
 		int count = (type == EFireType::FTE_Primary) ? weapon->Data.PrimaryBulletsPerShot : weapon->Data.PrimaryBulletsPerShot;
@@ -30,19 +30,25 @@ void UProjectileFireWeaponComponent::Fire(EFireType type, FVector location, FRot
 			//(type == EFireType::FTE_Primary) ? weapon->Data.PrimaryProjectileClass : weapon->Data.SecondaryProjectileClass
 			if (type == EFireType::FTE_Primary && weapon->Data.PrimaryProjectileClass != NULL)
 			{
-				ABaseProjectile* proj = weapon->GetWorld()->SpawnActor<ABaseProjectile>(weapon->Data.PrimaryProjectileClass, location,ShootDir.Rotation(), ActorSpawnParams);
-				proj->SetOwner(weapon->WeaponOwner);
-				proj->WeaponOwner = weapon->WeaponOwner;
-				proj->Damage = (type == EFireType::FTE_Primary) ? weapon->Data.PrimaryDamage : weapon->Data.SecondaryDamage;;
-				proj->DamageType = (type == EFireType::FTE_Primary) ? weapon->Data.PrimaryDamageType : weapon->Data.SecondaryDamageType;;
+				ABaseProjectile* proj = weapon->GetWorld()->SpawnActor<ABaseProjectile>(weapon->Data.PrimaryProjectileClass, location, ShootDir.Rotation(), ActorSpawnParams);
+				if (proj != nullptr && proj->IsValidLowLevel())
+				{
+					proj->SetOwner(weapon->WeaponOwner);
+					proj->WeaponOwner = weapon->WeaponOwner;
+					proj->Damage = (type == EFireType::FTE_Primary) ? weapon->Data.PrimaryDamage : weapon->Data.SecondaryDamage;;
+					proj->DamageType = (type == EFireType::FTE_Primary) ? weapon->Data.PrimaryDamageType : weapon->Data.SecondaryDamageType;;
+				}
 			}
 			else if (type == EFireType::FTE_Secondary && weapon->Data.SecondaryProjectileClass != NULL)
 			{
 				ABaseProjectile* proj = weapon->GetWorld()->SpawnActor<ABaseProjectile>(weapon->Data.SecondaryProjectileClass, location, ShootDir.Rotation(), ActorSpawnParams);
-				proj->SetOwner(weapon->WeaponOwner);
-				proj->WeaponOwner = weapon->WeaponOwner;
-				proj->Damage = (type == EFireType::FTE_Primary) ? weapon->Data.PrimaryDamage : weapon->Data.SecondaryDamage;;
-				proj->DamageType = (type == EFireType::FTE_Primary) ? weapon->Data.PrimaryDamageType : weapon->Data.SecondaryDamageType;;
+				if (proj != nullptr && proj->IsValidLowLevel())
+				{
+					proj->SetOwner(weapon->WeaponOwner);
+					proj->WeaponOwner = weapon->WeaponOwner;
+					proj->Damage = (type == EFireType::FTE_Primary) ? weapon->Data.PrimaryDamage : weapon->Data.SecondaryDamage;;
+					proj->DamageType = (type == EFireType::FTE_Primary) ? weapon->Data.PrimaryDamageType : weapon->Data.SecondaryDamageType;;
+				}
 			}
 			else
 			{

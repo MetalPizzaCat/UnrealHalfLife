@@ -110,7 +110,7 @@ bool AuhlCharacter::PickUpWeapon_Implementation(UDataTable* WeaponDataTable, UDa
 	{
 		FActorSpawnParameters ActorSpawnParams;
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		
+
 
 		//this->Weapons.Insert replaces add here
 
@@ -132,7 +132,43 @@ bool AuhlCharacter::PickUpWeapon_Implementation(UDataTable* WeaponDataTable, UDa
 
 		bool bSuccess = false;
 
-		if (this->Weapons.Num() == 0) { this->Weapons.Add(weaponTemp); return true; }
+		if (this->Weapons.Num() == 0)
+		{
+
+			this->Weapons.Add(weaponTemp);
+			if (this->Ammo.Contains(weaponTemp->Data.PrimaryAmmoType))
+			{
+				this->Ammo.Add(weaponTemp->Data.PrimaryAmmoType, primaryAmountOfAmmo + this->Ammo.FindChecked(weaponTemp->Data.PrimaryAmmoType));
+			}
+			else
+			{
+				this->Ammo.Add(weaponTemp->Data.PrimaryAmmoType, primaryAmountOfAmmo);
+			}
+
+			if (this->Ammo.Contains(weaponTemp->Data.SecondaryAmmoType))
+			{
+				this->Ammo.Add(weaponTemp->Data.SecondaryAmmoType, secondaryAmountOfAmmo + this->Ammo.FindChecked(weaponTemp->Data.SecondaryAmmoType));
+			}
+			else
+			{
+				this->Ammo.Add(weaponTemp->Data.SecondaryAmmoType, secondaryAmountOfAmmo);
+			}
+
+			for (int i = 0; i < this->Weapons.Num(); i++)
+			{
+				if (this->Ammo.Contains(this->Weapons[i]->Data.PrimaryAmmoType))
+				{
+					this->Weapons[i]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->Weapons[i]->Data.PrimaryAmmoType);
+				}
+				if (this->Ammo.Contains(this->Weapons[i]->Data.SecondaryAmmoType))
+				{
+					this->Weapons[i]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->Weapons[i]->Data.SecondaryAmmoType);
+				}
+			}
+
+			return true;
+
+		}
 		else
 		{
 			for (int i = 0; i < this->Weapons.Num(); i++)
@@ -141,12 +177,70 @@ bool AuhlCharacter::PickUpWeapon_Implementation(UDataTable* WeaponDataTable, UDa
 				{
 					this->Weapons.Insert(weaponTemp, i);
 
+					if (this->Ammo.Contains(weaponTemp->Data.PrimaryAmmoType))
+					{
+						this->Ammo.Add(weaponTemp->Data.PrimaryAmmoType, primaryAmountOfAmmo + this->Ammo.FindChecked(weaponTemp->Data.PrimaryAmmoType));
+					}
+					else
+					{
+						this->Ammo.Add(weaponTemp->Data.PrimaryAmmoType, primaryAmountOfAmmo);
+					}
+
+					if (this->Ammo.Contains(weaponTemp->Data.SecondaryAmmoType))
+					{
+						this->Ammo.Add(weaponTemp->Data.SecondaryAmmoType, secondaryAmountOfAmmo + this->Ammo.FindChecked(weaponTemp->Data.SecondaryAmmoType));
+					}
+					else
+					{
+						this->Ammo.Add(weaponTemp->Data.SecondaryAmmoType, secondaryAmountOfAmmo);
+					}
+
+					for (int i = 0; i < this->Weapons.Num(); i++)
+					{
+						if (this->Ammo.Contains(this->Weapons[i]->Data.PrimaryAmmoType))
+						{
+							this->Weapons[i]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->Weapons[i]->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->Weapons[i]->Data.SecondaryAmmoType))
+						{
+							this->Weapons[i]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->Weapons[i]->Data.SecondaryAmmoType);
+						}
+					}
 					return true;
 					break;
 				}
 			}
 
 			this->Weapons.Add(weaponTemp);
+			if (this->Ammo.Contains(weaponTemp->Data.PrimaryAmmoType))
+			{
+				this->Ammo.Add(weaponTemp->Data.PrimaryAmmoType, primaryAmountOfAmmo + this->Ammo.FindChecked(weaponTemp->Data.PrimaryAmmoType));
+			}
+			else
+			{
+				this->Ammo.Add(weaponTemp->Data.PrimaryAmmoType, primaryAmountOfAmmo);
+			}
+
+			if (this->Ammo.Contains(weaponTemp->Data.SecondaryAmmoType))
+			{
+				this->Ammo.Add(weaponTemp->Data.SecondaryAmmoType, secondaryAmountOfAmmo + this->Ammo.FindChecked(weaponTemp->Data.SecondaryAmmoType));
+			}
+			else
+			{
+				this->Ammo.Add(weaponTemp->Data.SecondaryAmmoType, secondaryAmountOfAmmo);
+			}
+
+			for (int i = 0; i < this->Weapons.Num(); i++)
+			{
+				if (this->Ammo.Contains(this->Weapons[i]->Data.PrimaryAmmoType))
+				{
+					this->Weapons[i]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->Weapons[i]->Data.PrimaryAmmoType);
+				}
+				if (this->Ammo.Contains(this->Weapons[i]->Data.SecondaryAmmoType))
+				{
+					this->Weapons[i]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->Weapons[i]->Data.SecondaryAmmoType);
+				}
+			}
 			return true;
 
 		}

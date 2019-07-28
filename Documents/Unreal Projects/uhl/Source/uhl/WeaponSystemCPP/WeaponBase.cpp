@@ -118,14 +118,14 @@ bool AWeaponBase::SecondaryFire(FVector location, FRotator rotation)
 	{
 		if (this->Data.Melee)
 		{
-			if(this->CanShoot(EFireType::FTE_Secondary))
+			if (this->CanShoot(EFireType::FTE_Secondary))
 			{
 				this->Data.SecondaryFireComponent->GetDefaultObject<UBaseFireComponent>()->Fire(EFireType::FTE_Secondary, location, rotation, this);
 				this->SecondaryIsShooting = true;
 				return true;
 			}
 		}
-		else 
+		else
 		{
 			if (this->CanShoot(EFireType::FTE_Secondary))
 			{
@@ -152,7 +152,8 @@ bool AWeaponBase::SecondaryFire(FVector location, FRotator rotation)
 
 					}
 				}
-				else {
+				else
+				{
 					if (this->SecondaryAmmoInTheClip > 0)
 					{
 						this->Data.SecondaryFireComponent->GetDefaultObject<UBaseFireComponent>()->Fire(EFireType::FTE_Secondary, location, rotation, this);
@@ -161,8 +162,9 @@ bool AWeaponBase::SecondaryFire(FVector location, FRotator rotation)
 						return true;
 
 					}
-					else if (this->SecondaryAmountOfAmmo > 0)
+					else if (this->SecondaryAmmoInTheClip <= 0 && this->SecondaryAmountOfAmmo > 0)
 					{
+						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Reloading Sec0"));
 						this->SecondaryReload();
 						return false;
 					}
@@ -266,6 +268,7 @@ void AWeaponBase::PrimaryReload()
 
 void AWeaponBase::SecondaryReload()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Reloading Sec"));
 	/*Because this is half-life reloading of alt fire doesn't really happens. Gordon magicly puts new grenade info the smg(also - Can this smg shoot grenades in real life?)*/
 	if ((this->SecondaryAmountOfAmmo - this->Data.SecondaryAmmoPerClip) >= 0)
 	{
