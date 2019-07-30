@@ -13,7 +13,7 @@ void UMeleeAttack::Fire(EFireType type, FVector location, FRotator rotation, AWe
 
 	if (weapon->GetWorld() != NULL)
 	{
-		FVector end = location + (rotation.Vector() * 200);
+		FVector end = location + (rotation.Vector() * 150);
 
 		FHitResult hitResult;
 		FCollisionQueryParams queryParams = FCollisionQueryParams::DefaultQueryParam;
