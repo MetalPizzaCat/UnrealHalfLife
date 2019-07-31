@@ -166,15 +166,15 @@ bool AWeaponBase::SecondaryFire(FVector location, FRotator rotation)
 					}
 					else if (this->SecondaryAmmoInTheClip <= 0 && this->SecondaryAmountOfAmmo > 0)
 					{
-						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Reloading Sec0"));
+					
 						this->SecondaryReload();
 						return false;
 					}
 					else
 					{
 
-						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Reloading Sec2"));
-						GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::FromInt(this->SecondaryAmountOfAmmo));
+						
+						//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::FromInt(this->SecondaryAmountOfAmmo));
 						return false;
 
 					}
@@ -286,7 +286,8 @@ void AWeaponBase::PrimaryReload()
 
 void AWeaponBase::SecondaryReload()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Reloading Sec"));
+	
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Reloading Sec"));
 	/*Because this is half-life reloading of alt fire doesn't really happens. Gordon magicly puts new grenade info the smg(also - Can this smg shoot grenades in real life?)*/
 	if ((this->SecondaryAmountOfAmmo - this->Data.SecondaryAmmoPerClip) >= 0)
 	{
@@ -348,7 +349,7 @@ bool AWeaponBase::CanShoot(EFireType type)
 		}
 		if (type == EFireType::FTE_Secondary)
 		{
-			return (!this->SecondaryIsShooting) && (this->SecondaryAmmoInTheClip > 0);
+			return (!this->SecondaryIsShooting) && (this->Data.SecondaryFireUsesPrimaryClip ? (this->PrimaryAmmoInTheClip > 0) :(this->SecondaryAmmoInTheClip > 0));
 		}
 	}
 	return false;
