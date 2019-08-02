@@ -379,7 +379,7 @@ bool AWeaponBase::LoadData(UDataTable* weaponDT, UDataTable* animationDT)
 			if (array[i]->Name == this->Name.ToString()) { this->Data = array[i]->Get(); }
 			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, array[i]->Name);
 		}
-		if (this->Data.DisplayName == "null") { res = false; GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Failed to load weapon data")); }
+		if (this->Data.DisplayName == "null") { res = false; /*GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Failed to load weapon data"));*/ }
 		else { res = true; }
 		//else if (this->Data.Mesh!=NULL){ this->WeaponMesh->SkeletalMesh = this->Data.Mesh; }
 		//UGameplayStatics::PlaySoundAtLocation(this, this->Data.PrimaryFireSound, this->GetActorLocation());
@@ -396,7 +396,7 @@ bool AWeaponBase::LoadData(UDataTable* weaponDT, UDataTable* animationDT)
 			if (AnimationArray[i]->Name == this->Data.AnimationDataName) { this->AnimationData = AnimationArray[i]; }
 			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, AnimationArray[i]->Name);
 		}
-		if (this->AnimationData == NULL) { GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Failed to load animation data")); }
+		if (this->AnimationData == NULL) { /*GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Failed to load animation data"));*/ }
 		else { res = true; }
 		//UGameplayStatics::PlaySoundAtLocation(this, this->Data.PrimaryFireSound, this->GetActorLocation());
 	}
@@ -435,7 +435,7 @@ void AWeaponBase::BeginPlay()
 		{
 			if (array[i]->Name == this->Name.ToString()) { this->Data = array[i]->Get(); }
 		}
-		if (this->Data.DisplayName == "null") { GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Failed to load weapon data")); }
+		if (this->Data.DisplayName == "null") { /*GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Failed to load weapon data"));*/ }
 		//else if (this->Data.Mesh!=NULL){ this->WeaponMesh->SkeletalMesh = this->Data.Mesh; }
 		//UGameplayStatics::PlaySoundAtLocation(this, this->Data.PrimaryFireSound, this->GetActorLocation());
 	}
@@ -451,7 +451,7 @@ void AWeaponBase::BeginPlay()
 			if (AnimationArray[i]->Name == this->Data.AnimationDataName) { this->AnimationData = AnimationArray[i]; }
 			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, AnimationArray[i]->Name);
 		}
-		if (this->AnimationData == NULL) { GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Failed to load animation data")); }
+		if (this->AnimationData == NULL) {/* GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("Failed to load animation data"));*/ }
 		//UGameplayStatics::PlaySoundAtLocation(this, this->Data.PrimaryFireSound, this->GetActorLocation());
 	}
 }

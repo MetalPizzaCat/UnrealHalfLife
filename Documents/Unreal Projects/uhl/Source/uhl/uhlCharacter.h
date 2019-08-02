@@ -70,6 +70,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, SaveGame)
 		int  CurrentWeaponCategoryId;
 
+	/*If true - OnSelectWeaponCategoryX will select usign Id instead of category*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, SaveGame)
+		bool bChooseIdInsteadOfCategory = true;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, SaveGame)
 		TMap<FString, int>Ammo;
 
@@ -277,6 +281,26 @@ protected:
 
 	/**/
 	void OnUse();
+
+	void OnSelectWeaponCategory1();
+
+	void OnSelectWeaponCategory2();
+
+	void OnSelectWeaponCategory3();
+
+	void OnSelectWeaponCategory4();
+
+	void OnSelectWeaponCategory5();
+
+	void OnSelectWeaponCategory6();
+
+	void OnSelectWeaponCategory7();
+
+	void OnSelectWeaponCategory8();
+
+	void OnSelectWeaponCategory9();
+
+	void OnSelectWeaponCategory0();
 
 	void OnStopUse();
 

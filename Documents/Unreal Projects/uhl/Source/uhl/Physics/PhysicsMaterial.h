@@ -31,4 +31,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UParticleSystem* ImpactParticleEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<UMaterialInterface*> ShotDecalMaterial;
 };

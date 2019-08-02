@@ -46,23 +46,67 @@ void UMeleeAttack::Fire(EFireType type, FVector location, FRotator rotation, AWe
 					hitResult.Location
 				);
 
-				if (hitResult.GetComponent()->GetMaterial(0) != nullptr)
+				if (hitResult.PhysMaterial != nullptr)
 				{
-					if (hitResult.GetComponent()->GetMaterial(0)->GetPhysicalMaterial() != nullptr)
+					if (Cast<UPhysicsMaterial>(hitResult.PhysMaterial) != nullptr)
 					{
-						
-
-						if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(0)->GetPhysicalMaterial()) != nullptr)
+						if (Cast<UPhysicsMaterial>(hitResult.PhysMaterial)->BulletHitSound != nullptr)
 						{
-							if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(0)->GetPhysicalMaterial())->BulletHitSound != nullptr)
-							{
-								UGameplayStatics::PlaySoundAtLocation(weapon->GetWorld(), Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(0)->GetPhysicalMaterial())->BulletHitSound, hitResult.Location);
-								
-							}
+							UGameplayStatics::PlaySoundAtLocation(weapon->GetWorld(), Cast<UPhysicsMaterial>(hitResult.PhysMaterial)->BulletHitSound, hitResult.Location);
 
-							if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(0)->GetPhysicalMaterial())->BulletImpactParticleEffect != nullptr)
+						}
+
+
+						if (Cast<UPhysicsMaterial>(hitResult.PhysMaterial)->BulletImpactParticleEffect != nullptr)
+						{
+							UGameplayStatics::SpawnEmitterAtLocation(weapon->GetWorld(), Cast<UPhysicsMaterial>(hitResult.PhysMaterial)->BulletImpactParticleEffect, hitResult.Location, (hitResult.Location - location).GetSafeNormal().Rotation());
+						}
+
+						if (Cast<UPhysicsMaterial>(hitResult.PhysMaterial)->ShotDecalMaterial.Num() > 0)
+						{
+							int number = FMath::RandRange(0, Cast<UPhysicsMaterial>(hitResult.PhysMaterial)->ShotDecalMaterial.Num());
+							if (Cast<UPhysicsMaterial>(hitResult.PhysMaterial)->ShotDecalMaterial[number] != nullptr)
 							{
-								UGameplayStatics::SpawnEmitterAtLocation(weapon->GetWorld(), Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(0)->GetPhysicalMaterial())->BulletImpactParticleEffect, hitResult.Location, (hitResult.Location - location).GetSafeNormal().Rotation());
+								UGameplayStatics::SpawnDecalAtLocation(weapon->GetWorld(), Cast<UPhysicsMaterial>(hitResult.PhysMaterial)->ShotDecalMaterial[number], FVector(8, 8, 8)/*standart size for bullet hole*/, hitResult.Location, (hitResult.Location - location).GetSafeNormal().Rotation());
+							}
+						}
+
+					}
+				}
+				else
+				{
+					for (int l = 0; l < hitResult.GetComponent()->GetNumMaterials(); l++)
+					{
+						if (hitResult.GetComponent()->GetMaterial(l) != nullptr)
+						{
+							if (hitResult.GetComponent()->GetMaterial(l)->GetPhysicalMaterial() != nullptr)
+							{
+
+
+								if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(l)->GetPhysicalMaterial()) != nullptr)
+								{
+									if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(l)->GetPhysicalMaterial())->BulletHitSound != nullptr)
+									{
+										UGameplayStatics::PlaySoundAtLocation(weapon->GetWorld(), Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(l)->GetPhysicalMaterial())->BulletHitSound, hitResult.Location);
+
+									}
+
+
+									if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(l)->GetPhysicalMaterial())->BulletImpactParticleEffect != nullptr)
+									{
+										UGameplayStatics::SpawnEmitterAtLocation(weapon->GetWorld(), Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(l)->GetPhysicalMaterial())->BulletImpactParticleEffect, hitResult.Location, (hitResult.Location - location).GetSafeNormal().Rotation());
+									}
+
+									if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(l)->GetPhysicalMaterial())->ShotDecalMaterial.Num() > 0)
+									{
+										int number = FMath::RandRange(0, Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(l)->GetPhysicalMaterial())->ShotDecalMaterial.Num() - 1);
+										if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(l)->GetPhysicalMaterial())->ShotDecalMaterial[number] != nullptr)
+										{
+											UGameplayStatics::SpawnDecalAtLocation(weapon->GetWorld(), Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(l)->GetPhysicalMaterial())->ShotDecalMaterial[number], FVector(8, 8, 8)/*standart size for bullet hole*/, hitResult.Location, (hitResult.Location - location).GetSafeNormal().Rotation());
+										}
+									}
+									break;
+								}
 							}
 						}
 					}

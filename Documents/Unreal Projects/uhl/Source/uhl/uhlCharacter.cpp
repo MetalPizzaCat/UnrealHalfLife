@@ -315,6 +315,20 @@ void AuhlCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 	PlayerInputComponent->BindAction("Use", IE_Pressed, this, &AuhlCharacter::OnUse);
 	PlayerInputComponent->BindAction("Use", IE_Released, this, &AuhlCharacter::OnStopUse);
 
+	PlayerInputComponent->BindAction("SelectWeaponCategory1", IE_Pressed, this, &AuhlCharacter::OnSelectWeaponCategory1);
+	PlayerInputComponent->BindAction("SelectWeaponCategory2", IE_Pressed, this, &AuhlCharacter::OnSelectWeaponCategory2);
+	PlayerInputComponent->BindAction("SelectWeaponCategory3", IE_Pressed, this, &AuhlCharacter::OnSelectWeaponCategory3);
+	PlayerInputComponent->BindAction("SelectWeaponCategory4", IE_Pressed, this, &AuhlCharacter::OnSelectWeaponCategory4);
+	PlayerInputComponent->BindAction("SelectWeaponCategory5", IE_Pressed, this, &AuhlCharacter::OnSelectWeaponCategory5);
+	PlayerInputComponent->BindAction("SelectWeaponCategory6", IE_Pressed, this, &AuhlCharacter::OnSelectWeaponCategory6);
+	PlayerInputComponent->BindAction("SelectWeaponCategory7", IE_Pressed, this, &AuhlCharacter::OnSelectWeaponCategory7);
+	PlayerInputComponent->BindAction("SelectWeaponCategory8", IE_Pressed, this, &AuhlCharacter::OnSelectWeaponCategory8);
+	PlayerInputComponent->BindAction("SelectWeaponCategory9", IE_Pressed, this, &AuhlCharacter::OnSelectWeaponCategory9);
+	PlayerInputComponent->BindAction("SelectWeaponCategory0", IE_Pressed, this, &AuhlCharacter::OnSelectWeaponCategory0);
+
+
+
+
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
 
@@ -385,7 +399,7 @@ void AuhlCharacter::OnUse()
 				}
 				else
 				{
-					GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("hitResult.GetComponent() returns nullptr"));
+					//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("hitResult.GetComponent() returns nullptr"));
 				}
 			}
 			else
@@ -396,11 +410,11 @@ void AuhlCharacter::OnUse()
 		}
 		if (hitResult.Location != FVector::ZeroVector)
 		{
-			DrawDebugLine(this->GetWorld(), start, hitResult.Location, FColor::Green, false, 5.f, 0, 1.f);
+			//DrawDebugLine(this->GetWorld(), start, hitResult.Location, FColor::Green, false, 5.f, 0, 1.f);
 		}
 		else
 		{
-			DrawDebugLine(this->GetWorld(), start, end, FColor::Red, false, 5.f, 0, 1.f);
+			//DrawDebugLine(this->GetWorld(), start, end, FColor::Red, false, 5.f, 0, 1.f);
 		}
 
 		this->bPhysicsHandleActive = !this->bPhysicsHandleActive;
@@ -410,6 +424,515 @@ void AuhlCharacter::OnUse()
 			PhysicsHandle->ReleaseComponent();
 			this->bHoldingItem = false;
 			PhysicsObject = nullptr;
+		}
+	}
+}
+
+void AuhlCharacter::OnSelectWeaponCategory1()
+{
+	int category = 0;/*to make copying easier*/
+	if (!bChooseIdInsteadOfCategory)
+	{
+		if (this->GetCurrentWeapon()->Data.CategoryId != category)
+		{
+			if (this->Weapons.Num() > 0)
+			{
+				for (int i = 0; i < this->Weapons.Num(); i++)
+				{
+					if (this->Weapons[i]->Data.CategoryId == category)
+					{
+						this->CurrentWeaponId = i;
+
+						this->WeaponChageAnimNote(i, this->CurrentWeaponId);
+
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (this->CurrentWeaponId != category && category < this->Weapons.Num())
+		{
+			this->CurrentWeaponId = category;
+
+			this->WeaponChageAnimNote(category, this->CurrentWeaponId);
+
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+			}
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+			}
+		}
+	}
+}
+
+void AuhlCharacter::OnSelectWeaponCategory2()
+{
+	int category = 1;/*to make copying easier*/
+
+	if (!bChooseIdInsteadOfCategory)
+	{
+		if (this->GetCurrentWeapon()->Data.CategoryId != category)
+		{
+			if (this->Weapons.Num() > 0)
+			{
+				for (int i = 0; i < this->Weapons.Num(); i++)
+				{
+					if (this->Weapons[i]->Data.CategoryId == category)
+					{
+						this->CurrentWeaponId = i;
+
+						this->WeaponChageAnimNote(i, this->CurrentWeaponId);
+
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (this->CurrentWeaponId != category && category < this->Weapons.Num())
+		{
+			this->CurrentWeaponId = category;
+
+			this->WeaponChageAnimNote(category, this->CurrentWeaponId);
+
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+			}
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+			}
+		}
+	}
+}
+
+void AuhlCharacter::OnSelectWeaponCategory3()
+{
+	int category = 2;/*to make copying easier*/
+
+	if (!bChooseIdInsteadOfCategory)
+	{
+		if (this->GetCurrentWeapon()->Data.CategoryId != category)
+		{
+			if (this->Weapons.Num() > 0)
+			{
+				for (int i = 0; i < this->Weapons.Num(); i++)
+				{
+					if (this->Weapons[i]->Data.CategoryId == category)
+					{
+						this->CurrentWeaponId = i;
+
+						this->WeaponChageAnimNote(i, this->CurrentWeaponId);
+
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (this->CurrentWeaponId != category && category < this->Weapons.Num())
+		{
+			this->CurrentWeaponId = category;
+
+			this->WeaponChageAnimNote(category, this->CurrentWeaponId);
+
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+			}
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+			}
+		}
+	}
+}
+
+void AuhlCharacter::OnSelectWeaponCategory4()
+{
+	int category = 3;/*to make copying easier*/
+
+	if (!bChooseIdInsteadOfCategory)
+	{
+		if (this->GetCurrentWeapon()->Data.CategoryId != category)
+		{
+			if (this->Weapons.Num() > 0)
+			{
+				for (int i = 0; i < this->Weapons.Num(); i++)
+				{
+					if (this->Weapons[i]->Data.CategoryId == category)
+					{
+						this->CurrentWeaponId = i;
+
+						this->WeaponChageAnimNote(i, this->CurrentWeaponId);
+
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (this->CurrentWeaponId != category && category < this->Weapons.Num())
+		{
+			this->CurrentWeaponId = category;
+
+			this->WeaponChageAnimNote(category, this->CurrentWeaponId);
+
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+			}
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+			}
+		}
+	}
+}
+
+void AuhlCharacter::OnSelectWeaponCategory5()
+{
+	int category = 4;/*to make copying easier*/
+
+	if (!bChooseIdInsteadOfCategory)
+	{
+		if (this->GetCurrentWeapon()->Data.CategoryId != category)
+		{
+			if (this->Weapons.Num() > 0)
+			{
+				for (int i = 0; i < this->Weapons.Num(); i++)
+				{
+					if (this->Weapons[i]->Data.CategoryId == category)
+					{
+						this->CurrentWeaponId = i;
+
+						this->WeaponChageAnimNote(i, this->CurrentWeaponId);
+
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (this->CurrentWeaponId != category && category < this->Weapons.Num())
+		{
+			this->CurrentWeaponId = category;
+
+			this->WeaponChageAnimNote(category, this->CurrentWeaponId);
+
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+			}
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+			}
+		}
+	}
+}
+
+void AuhlCharacter::OnSelectWeaponCategory6()
+{
+	int category = 5;/*to make copying easier*/
+	if (!bChooseIdInsteadOfCategory)
+	{
+		if (this->GetCurrentWeapon()->Data.CategoryId != category)
+		{
+			if (this->Weapons.Num() > 0)
+			{
+				for (int i = 0; i < this->Weapons.Num(); i++)
+				{
+					if (this->Weapons[i]->Data.CategoryId == category)
+					{
+						this->CurrentWeaponId = i;
+
+						this->WeaponChageAnimNote(i, this->CurrentWeaponId);
+
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (this->CurrentWeaponId != category && category < this->Weapons.Num())
+		{
+			this->CurrentWeaponId = category;
+
+			this->WeaponChageAnimNote(category, this->CurrentWeaponId);
+
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+			}
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+			}
+		}
+	}
+}
+
+void AuhlCharacter::OnSelectWeaponCategory7()
+{
+	int category = 6;/*to make copying easier*/
+
+	if (!bChooseIdInsteadOfCategory)
+	{
+		if (this->GetCurrentWeapon()->Data.CategoryId != category)
+		{
+			if (this->Weapons.Num() > 0)
+			{
+				for (int i = 0; i < this->Weapons.Num(); i++)
+				{
+					if (this->Weapons[i]->Data.CategoryId == category)
+					{
+						this->CurrentWeaponId = i;
+
+						this->WeaponChageAnimNote(i, this->CurrentWeaponId);
+
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (this->CurrentWeaponId != category && category < this->Weapons.Num())
+		{
+			this->CurrentWeaponId = category;
+
+			this->WeaponChageAnimNote(category, this->CurrentWeaponId);
+
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+			}
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+			}
+		}
+	}
+}
+
+void AuhlCharacter::OnSelectWeaponCategory8()
+{
+	int category = 7;/*to make copying easier*/
+
+	if (!bChooseIdInsteadOfCategory)
+	{
+		if (this->GetCurrentWeapon()->Data.CategoryId != category)
+		{
+			if (this->Weapons.Num() > 0)
+			{
+				for (int i = 0; i < this->Weapons.Num(); i++)
+				{
+					if (this->Weapons[i]->Data.CategoryId == category)
+					{
+						this->CurrentWeaponId = i;
+
+						this->WeaponChageAnimNote(i, this->CurrentWeaponId);
+
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (this->CurrentWeaponId != category && category < this->Weapons.Num())
+		{
+			this->CurrentWeaponId = category;
+
+			this->WeaponChageAnimNote(category, this->CurrentWeaponId);
+
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+			}
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+			}
+		}
+	}
+}
+
+void AuhlCharacter::OnSelectWeaponCategory9()
+{
+	int category = 8;/*to make copying easier*/
+
+	if (!bChooseIdInsteadOfCategory)
+	{
+		if (this->GetCurrentWeapon()->Data.CategoryId != category)
+		{
+			if (this->Weapons.Num() > 0)
+			{
+				for (int i = 0; i < this->Weapons.Num(); i++)
+				{
+					if (this->Weapons[i]->Data.CategoryId == category)
+					{
+						this->CurrentWeaponId = i;
+
+						this->WeaponChageAnimNote(i, this->CurrentWeaponId);
+
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (this->CurrentWeaponId != category && category < this->Weapons.Num())
+		{
+			this->CurrentWeaponId = category;
+
+			this->WeaponChageAnimNote(category, this->CurrentWeaponId);
+
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+			}
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+			}
+		}
+	}
+}
+
+void AuhlCharacter::OnSelectWeaponCategory0()
+{
+	
+	int category = 9;/*to make copying easier*/
+
+	if (!bChooseIdInsteadOfCategory)
+	{
+		if (this->GetCurrentWeapon()->Data.CategoryId != category)
+		{
+			if (this->Weapons.Num() > 0)
+			{
+				for (int i = 0; i < this->Weapons.Num(); i++)
+				{
+					if (this->Weapons[i]->Data.CategoryId == category)
+					{
+						this->CurrentWeaponId = i;
+
+						this->WeaponChageAnimNote(i, this->CurrentWeaponId);
+
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+						}
+						if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+						{
+							this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		if (this->CurrentWeaponId != category && category < this->Weapons.Num())
+		{
+			this->CurrentWeaponId = category;
+
+			this->WeaponChageAnimNote(category, this->CurrentWeaponId);
+
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.PrimaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->PrimaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.PrimaryAmmoType);
+			}
+			if (this->Ammo.Contains(this->GetCurrentWeapon()->Data.SecondaryAmmoType))
+			{
+				this->Weapons[this->CurrentWeaponId]->SecondaryAmountOfAmmo = this->Ammo.FindChecked(this->GetCurrentWeapon()->Data.SecondaryAmmoType);
+			}
 		}
 	}
 }
@@ -841,9 +1364,17 @@ bool  AuhlCharacter::PickUpAmmo_Implementation(FString AmmoName, int Amount)
 
 void AuhlCharacter::Tick(float DeltaTime)
 {
+	
+
 	if (this->bPhysicsHandleActive && this->bHoldingItem && this->PhysicsObject != nullptr)
 	{
 		this->PhysicsHandle->SetTargetLocation(this->GetFirstPersonCameraComponent()->GetComponentLocation() + (this->GetFirstPersonCameraComponent()->GetForwardVector() * 300));
+		if (FVector::Distance(this->GetFirstPersonCameraComponent()->GetComponentLocation() + (this->GetFirstPersonCameraComponent()->GetForwardVector() * 300), this->PhysicsObject->GetActorLocation()) > 100)
+		{
+			PhysicsHandle->ReleaseComponent();
+			this->bHoldingItem = false;
+			PhysicsObject = nullptr;
+		}
 		//this->PhysicsObject->SetActorLocation(this->GetFirstPersonCameraComponent()->GetComponentLocation() + (this->GetFirstPersonCameraComponent()->GetForwardVector() * 300));
 	}
 
@@ -886,18 +1417,35 @@ void AuhlCharacter::Tick(float DeltaTime)
 					}
 					else if (hitResult.GetComponent() != nullptr)
 					{
-						if (hitResult.GetComponent()->GetMaterial(0) != nullptr)
+						if (hitResult.PhysMaterial != nullptr)
 						{
-							if (hitResult.GetComponent()->GetMaterial(0)->GetPhysicalMaterial() != nullptr)
+							if (Cast<UPhysicsMaterial>(hitResult.PhysMaterial) != nullptr)
 							{
-
-
-								if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(0)->GetPhysicalMaterial()) != nullptr)
+								if (Cast<UPhysicsMaterial>(hitResult.PhysMaterial)->BulletHitSound != nullptr)
 								{
-									if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(0)->GetPhysicalMaterial())->BulletHitSound != nullptr)
-									{
-										UGameplayStatics::PlaySoundAtLocation(GetWorld(), Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(0)->GetPhysicalMaterial())->StepSound, hitResult.Location);
+									UGameplayStatics::PlaySoundAtLocation(GetWorld(), Cast<UPhysicsMaterial>(hitResult.PhysMaterial)->StepSound, hitResult.Location);
 
+								}
+							}
+						}
+						else
+						{
+							for (int i = 0; i < hitResult.GetComponent()->GetNumMaterials(); i++)
+							{
+								if (hitResult.GetComponent()->GetMaterial(i) != nullptr)
+								{
+									if (hitResult.GetComponent()->GetMaterial(i)->GetPhysicalMaterial() != nullptr)
+									{
+
+
+										if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(i)->GetPhysicalMaterial()) != nullptr)
+										{
+											if (Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(i)->GetPhysicalMaterial())->BulletHitSound != nullptr)
+											{
+												UGameplayStatics::PlaySoundAtLocation(GetWorld(), Cast<UPhysicsMaterial>(hitResult.GetComponent()->GetMaterial(i)->GetPhysicalMaterial())->StepSound, hitResult.Location);
+												break;
+											}
+										}
 									}
 								}
 							}
